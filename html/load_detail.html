@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../css/aui2.css"/>
+		<style type="text/css">
+			#aui-header{
+			position: fixed;
+            background-color: #00b7f5;
+            z-index: 1;
+            padding-top:1.25rem;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="aui-bar aui-bar-nav" id="aui-header" >
+			<a class="aui-pull-left aui-bar-info aui-btn"  onclick="closeWin()"><span class="aui-iconfont aui-icon-left"></span>返回</a>
+			<div class="aui-title" id="title">
+				档案详情
+			</div>
+		</header>
+		<div id="aui-content">
+			<ul class="aui-list aui-form-list">
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label aui-font-size-14">
+							区域:
+						</div>
+						<div class="aui-list-item-input aui-font-size-14" id="region_name">
+							暂无
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label aui-font-size-14">
+							路长:
+						</div>
+						<div class="aui-list-item-input aui-font-size-14" id="loadLeader">
+							暂无
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner ">
+						<div class="aui-list-item-label aui-font-size-14">
+							分路长:
+						</div>
+						<div class="aui-list-item-input aui-font-size-14" id="deputyLeader">
+							暂无
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner ">
+						<div class="aui-list-item-label aui-font-size-14">
+							路线编号:
+						</div>
+						<div class="aui-list-item-input aui-font-size-14" id="Load_No">
+							暂无
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner ">
+						<div class="aui-list-item-label aui-font-size-14">
+							路长名称:
+						</div>
+						<div class="aui-list-item-input aui-font-size-14" id="LoadName">
+							暂无
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label aui-font-size-14">
+							道路长度(KM):
+						</div>
+						<div class="aui-list-item-input aui-font-size-14" id="LoadLength">
+							暂无
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label aui-font-size-14">
+							道路宽度(m):
+						</div>
+						<div class="aui-list-item-input aui-font-size-14" id="LoadWidth">
+							暂无
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label aui-font-size-14">
+							护路员:
+						</div>
+						<div class="aui-list-item-input aui-font-size-14" id="TrackMaster">
+							暂无
+						</div>
+					</div>
+				</li>
+				<li class="aui-list-item">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-label aui-font-size-14">
+							保洁员:
+						</div>
+						<div class="aui-list-item-input aui-font-size-14" id="Cleaner">
+							暂无
+						</div>
+					</div>
+				</li>
+				
+			</ul>
+			 <ul class="aui-list aui-media-list">
+			 	<li class="aui-list-item ">
+	            	<div class="aui-media-list-item-inner">
+		                <div class="aui-list-item-inner">
+		                    <div class="aui-list-item-text">
+		                        <div class="aui-list-item-title">路面情况</div>
+		                    </div>
+		                    <div class="aui-list-item-text" id="loadSituation">
+		                        		暂无
+		                    </div>
+		                </div>
+	            	</div>
+        		</li>
+        		<li class="aui-list-item ">
+	            	<div class="aui-media-list-item-inner">
+		                <div class="aui-list-item-inner">
+		                    <div class="aui-list-item-text">
+		                        <div class="aui-list-item-title">绿化情况</div>
+		                    </div>
+		                    <div class="aui-list-item-text" id="greenSituation">
+		                        		暂无
+		                    </div>
+		                </div>
+	            	</div>
+        		</li>
+        		<li class="aui-list-item ">
+	            	<div class="aui-media-list-item-inner">
+		                <div class="aui-list-item-inner">
+		                    <div class="aui-list-item-text">
+		                        <div class="aui-list-item-title">亮化、路灯情况</div>
+		                    </div>
+		                    <div class="aui-list-item-text" id="load_lighting">
+		                        		暂无
+		                    </div>
+		                </div>
+	            	</div>
+        		</li>
+        		<li class="aui-list-item ">
+	            	<div class="aui-media-list-item-inner">
+		                <div class="aui-list-item-inner">
+		                    <div class="aui-list-item-text">
+		                        <div class="aui-list-item-title">桥梁涵洞情况</div>
+		                    </div>
+		                    <div class="aui-list-item-text" id="culvertSituation">
+		                        		暂无
+		                    </div>
+		                </div>
+	            	</div>
+        		</li>
+        		<li class="aui-list-item ">
+	            	<div class="aui-media-list-item-inner">
+		                <div class="aui-list-item-inner">
+		                    <div class="aui-list-item-text">
+		                        <div class="aui-list-item-title">临水临崖情况</div>
+		                    </div>
+		                    <div class="aui-list-item-text" id="cliffSituation">
+		                        		暂无
+		                    </div>
+		                </div>
+	            	</div>
+        		</li>
+        		<li class="aui-list-item ">
+	            	<div class="aui-media-list-item-inner">
+		                <div class="aui-list-item-inner">
+		                    <div class="aui-list-item-text">
+		                        <div class="aui-list-item-title">路侧地下管线情况</div>
+		                    </div>
+		                    <div class="aui-list-item-text" id="pipeSituation">
+		                        		暂无
+		                    </div>
+		                </div>
+	            	</div>
+        		</li>
+        		<li class="aui-list-item ">
+	            	<div class="aui-media-list-item-inner">
+		                <div class="aui-list-item-inner">
+		                    <div class="aui-list-item-text">
+		                        <div class="aui-list-item-title">平交路面情况</div>
+		                    </div>
+		                    <div class="aui-list-item-text" id="pathCondition">
+		                        		暂无
+		                    </div>
+		                </div>
+	            	</div>
+        		</li>
+        		<li class="aui-list-item ">
+	            	<div class="aui-media-list-item-inner">
+		                <div class="aui-list-item-inner">
+		                    <div class="aui-list-item-text">
+		                        <div class="aui-list-item-title">安保设施情况</div>
+		                    </div>
+		                    <div class="aui-list-item-text" id="SecuritySituation">
+		                        		暂无
+		                    </div>
+		                </div>
+	            	</div>
+        		</li>
+        		<li class="aui-list-item ">
+	            	<div class="aui-media-list-item-inner">
+		                <div class="aui-list-item-inner">
+		                    <div class="aui-list-item-text">
+		                        <div class="aui-list-item-title">暂时存在的隐患问题</div>
+		                    </div>
+		                    <div class="aui-list-item-text" id="haveProblem">
+		                        		暂无
+		                    </div>
+		                </div>
+	            	</div>
+        		</li>
+			 </ul>
+		</div>
+	</body>
+	<script src="../js/jquery-1.8.2.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/comment.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/aui-toast.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/webconstans.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var roadId,toast;
+			$(document).ready(function(){
+				$("#aui-content").css("margin-top",$("#aui-header").outerHeight());
+				toast = new auiToast();
+				roadId = getUrlParam("roadId");
+				GetLoadDetail();
+				
+			})
+			
+			
+			//获取道路详情
+			function GetLoadDetail(){
+				toast.loading({
+				title: "加载中",
+				duration: 2000
+			});
+			$.post(GET_LOAD_DETAIL,
+				{
+				roadid: roadId
+				//roadid:'069539D1-9A7D-4107-B615-35E341D63F3F'
+				},
+				function(ret,status){
+					toast.hide();
+					if(status =='success'&&ret.eCode == 0){
+						console.log(JSON.stringify(ret.eData))
+						InitView(ret.eData);
+					}else{
+						alert(JSON.stringify(ret));
+					}
+			},'json')
+				
+				
+			}
+			//页面初始化
+			function InitView(mData){
+				$("#region_name").text((mData.road_regionname?mData.road_regionname:"暂无"));
+				$("#loadLeader").text((mData.road_manager?mData.road_manager:"暂无"));
+				$("#deputyLeader").text((mData.road_submanager?mData.road_submanager:"暂无"));
+				$("#Load_No").text((mData.road_no?mData.road_no:"暂无"));
+				$("#LoadName").text((mData.road_name?mData.road_name:"暂无"));
+				$("#LoadLength").text((mData.road_length?mData.road_length:"暂无"));
+				$("#LoadWidth").text((mData.road_width?mData.road_width:"暂无"));
+				$("#TrackMaster").text((mData.road_protecter?mData.road_protecter:"暂无"));
+				$("#Cleaner").text((mData.road_cleaner?mData.road_cleaner:"暂无"));
+				
+				$("#loadSituation").text((mData.road_pavement?mData.road_pavement:"暂无"));
+				$("#greenSituation").text((mData.road_green?mData.road_green:"暂无"));
+				$("#load_lighting").text((mData.road_streetlight?mData.road_streetlight:"暂无"));
+				$("#culvertSituation").text((mData.road_bridge?mData.road_bridge:"暂无"));
+				$("#cliffSituation").text((mData.road_bywater?mData.road_bywater:"暂无"));
+				$("#pipeSituation").text((mData.road_pipelines?mData.road_pipelines:"暂无"));
+				$("#pathCondition").text((mData.road_cross?mData.road_cross:"暂无"));
+				$("#SecuritySituation").text((mData.road_security?mData.road_security:"暂无"));
+				$("#haveProblem").text((mData.road_problem?mData.road_problem:"暂无"));
+				
+			}
+			
+			function closeWin(){
+				api.closeWin();
+			}
+	</script>
+</html>

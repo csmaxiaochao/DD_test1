@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<title></title>
+	</head>
+	<link rel="stylesheet" type="text/css" href="../../css/aui2.css"/>
+	<style type="text/css">
+			#aui-header{
+			position: fixed;
+            background-color: #00b7f5;
+            z-index: 10;
+            padding-top:1.25rem;
+			}
+		</style>
+	<body>
+		<header class="aui-bar aui-bar-nav" id="aui-header" >
+			<a class="aui-pull-left aui-bar-info aui-btn"  onclick="onclickitem('backwin')"><span class="aui-iconfont aui-icon-left"></span>返回</a>
+			<div class="aui-title" id="title">
+				新闻详情
+			</div>
+		</header>
+		<div id="aui-contant">
+			<ul class="aui-list aui-media-list">
+            <!--<li class="aui-list-item aui-list-item-middle" tapmode onclick="openArticleDetail()">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-inner aui-list-item-arrow">
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title aui-font-size-14 aui-ellipsis-1">关于切实做好公路保洁工作的通知</div>
+                        </div>
+                        <div class="aui-list-item-text">
+                            2018-06-07 12:23:45
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item aui-list-item-middle" tapmode onclick="openArticleDetail()">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-inner aui-list-item-arrow">
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title aui-font-size-14 aui-ellipsis-1">关于切实做好公路保洁工作的通知</div>
+                        </div>
+                        <div class="aui-list-item-text">
+                            2018-06-07 12:23:45
+                        </div>
+                    </div>
+                </div>
+            </li>  <li class="aui-list-item aui-list-item-middle" tapmode onclick="openArticleDetail()">
+                  <div class="aui-media-list-item-inner">
+                      <div class="aui-list-item-inner aui-list-item-arrow">
+                          <div class="aui-list-item-text">
+                              <div class="aui-list-item-title aui-font-size-14 aui-ellipsis-1">关于切实做好公路保洁工作的通知</div>
+                          </div>
+                          <div class="aui-list-item-text">
+                              2018-06-07 12:23:45
+                          </div>
+                      </div>
+                  </div>
+              </li>  <li class="aui-list-item aui-list-item-middle" tapmode onclick="openArticleDetail()">
+                    <div class="aui-media-list-item-inner">
+                        <div class="aui-list-item-inner aui-list-item-arrow">
+                            <div class="aui-list-item-text">
+                                <div class="aui-list-item-title aui-font-size-14 aui-ellipsis-1">关于切实做好公路保洁工作的通知</div>
+                            </div>
+                            <div class="aui-list-item-text">
+                                2018-06-07 12:23:45
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="aui-list-item aui-list-item-middle" >
+                      <div class="aui-media-list-item-inner">
+                          <div class="aui-list-item-inner aui-list-item-arrow">
+                              <div class="aui-list-item-text">
+                                  <div class="aui-list-item-title aui-font-size-14 aui-ellipsis-1">关于切实做好公路保洁工作的通知</div>
+                              </div>
+                              <div class="aui-list-item-text">
+                                  2018-06-07 12:23:45
+                              </div>
+                          </div>
+                      </div>
+                  </li>
+                  <li class="aui-list-item aui-list-item-middle">
+                        <div class="aui-media-list-item-inner">
+                            <div class="aui-list-item-inner aui-list-item-arrow">
+                                <div class="aui-list-item-text">
+                                    <div class="aui-list-item-title aui-font-size-14 aui-ellipsis-1">关于切实做好公路保洁工作的通知</div>
+                                </div>
+                                <div class="aui-list-item-text">
+                                    2018-06-07 12:23:45
+                                </div>
+                            </div>
+                        </div>
+                    </li>-->
+        </ul>
+		</div>
+	</body>
+	<script src="../../js/jquery-1.8.2.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/aui-toast.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/webconstans.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/aui-scroll.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/comment.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var html='',infoindex = 0,hasData = true,moffset = 0,toast,paramUserid;
+		var infoarray = new Array();
+		$(document).ready(function(){
+			toast = new auiToast();
+			$("#aui-contant").css("margin-top",$("#aui-header").outerHeight());
+			paramUserid = getUrlParam("userid");
+			getnewsList();
+			
+			
+		})
+		
+		  //滚动监听   下拉加载
+  		var scroll = new auiScroll({
+  			listen : true,
+  			distance : 100 //判断到达底部的距离，isToBottom为true
+  		}, function(ret) {
+  			if (ret.isToBottom) {
+  				if (hasData && moffset >= 10) {
+  					hasData = false;
+  					getnewsList();
+  				}
+  			}
+  		});
+  		
+  		//加载地域数据
+		function getnewsList(){
+			toast.loading({
+				title: "加载中",
+				duration: 2000
+			});
+			$.post(GET_NEWS_LISTINFO,
+				{
+				userid: 'D8D0A86E-5D00-429C-9414-5C983A218AF7',
+				limit:10,
+				offset:moffset
+				},function(ret,status){
+					toast.hide();
+					if(status =='success'&&ret.rcode == 0){
+						//alert(JSON.stringify(ret))
+						moffset+=ret.rdata.length;
+						if (ret.rdata.length > 0) {
+							drawNewsView(ret.rdata);
+						}else{
+							if(moffset == 0){
+								toast.custom({
+					                    title:"暂无数据",
+					                    duration:2000
+					                });
+							}else{
+								toast.custom({
+					                    title:"到底啦,没有更多数据了...",
+					                    duration:2000
+					               });
+							}
+						}
+					}else{
+						//alert(JSON.stringify(ret))
+						console.log(JSON.stringify(ret));
+					}
+			},'json')
+		}
+		
+		//获取新闻列表
+		function drawNewsView(mData){
+			html = '';
+			for(var i =0;i < mData.length;i++){
+				infoarray.push(mData[i]);
+				html +='<li class="aui-list-item aui-list-item-middle" onclick="onclickitem(\'itemClick\',' + infoindex + ')">'+
+                      '<div class="aui-media-list-item-inner">'+
+                          '<div class="aui-list-item-inner aui-list-item-arrow">'+
+                              '<div class="aui-list-item-text">'+
+                                  '<div class="aui-list-item-title aui-font-size-14 aui-ellipsis-1">'+mData[i].news_title+'</div>'+
+                              '</div>'+
+                              '<div class="aui-list-item-text">'+
+                                  mData[i].news_date+
+                              '</div>'+
+                          '</div>'+
+                      '</div>'+
+                  '</li>';
+                  infoindex++;
+			};
+			$('.aui-media-list').append(html);
+		}
+		function onclickitem(type,mindex){
+			switch (type){
+				case 'itemClick':
+				api.openWin({
+					    name: 'newsDetail',
+					    url: 'http://192.168.0.156:8034/html/news/news_detail.html?newsid='+infoarray[mindex].id,
+						delay:200,
+						// useWKWebView:true,
+						historyGestureEnabled:true
+							});
+//				$(window).attr('location','news_detail.html');
+					//alert();
+					break;
+				case 'backwin':
+				api.closeWin();
+				break;
+				default:
+					break;
+			}
+			
+			
+		}
+	</script>
+</html>

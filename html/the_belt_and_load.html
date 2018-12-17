@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../css/aui2.css"/>
+		<style type="text/css">
+			body{
+				overflow: hidden;
+			}
+			#aui-header{
+			position: fixed;
+            background-color: #00b7f5;
+            z-index: 20;
+            padding-top:1.25rem;
+			}
+			
+			/*.mark{
+				    position:absolute;
+				    width:100%;
+				    height:30%;
+				    background:rgba(56,62,75,0.5);
+				    z-index:98;
+				    pointer-events: none; //不能操作
+			}*/
+			.classify-main {
+				position:absolute;
+				/*max-height: 16.5rem;*/
+				max-height: 13rem;
+				width: 100%;
+				background:white;
+				/*overflow-x: hidden;*/
+				z-index: 9;
+				/*border: 1px solid #FFB300;*/
+			}
+			.classify-main .aui-list {
+				overflow-y: scroll;
+				/*max-height: 16.5rem;;*/
+				max-height: 13rem;
+			}
+			.back_div {
+				position:absolute;
+				z-index: 9;
+				min-width: 100%;
+				/*height: auto;*/
+				overflow: hidden;
+				max-height: 50%;
+				/*min-height: 300px;*/
+				background:rgba(56,62,75,0.5);
+			}
+			.classify-click {
+				color: #2C99DE !important;
+			}
+			.region-item{
+				max-height: 13rem;
+				min-height: 13rem;
+				overflow: scroll;
+				margin-bottom: 2rem
+			}
+			.aui_btn_bottom {
+				position: absolute;
+				right: 0;
+				left: 0;
+				/*bottom: 11rem;*/
+				z-index: 9;
+			}
+			#scroll_list{
+				overflow: auto;
+			}
+
+		</style>
+	</head>
+	<body>
+		<!--<header class="aui-bar aui-bar-nav" id="aui-header" >
+			<a class="aui-pull-left aui-bar-info aui-btn"  onclick="closeWin()"><span class="aui-iconfont aui-icon-left"></span>返回</a>
+			<div class="aui-title" id="title">
+				一路一档
+			</div>
+		</header>-->
+		  	<div  id="box_refresh" class="err-box" onclick="refushPagelist()" style="display:none;z-index: 9;">
+		       <i class=" aui-iconfont aui-icon-refresh " style="font-size:3.5rem; " ></i>
+		       <p id="err_info" style="max-height: 3rem;">错误</p>
+		       <a >点击刷新页面</a>
+		    </div>
+		    <div class="err-box" id='no_data' style="z-index: 8;display:none">
+		       <img  src="../img/nodata.png" style="font-size:3.5rem;" />
+		    </div>
+			<div class="aui-contant">
+				<div class="aui-searchbar" id="search">
+					<div class="aui-searchbar-input aui-border-radius">
+						<i class="aui-iconfont aui-icon-search"></i>
+						<input type="search" placeholder="请输入关键字" id="search-input">
+						<div class="aui-searchbar-clear-btn">
+							<i class="aui-iconfont aui-icon-close"></i>
+						</div>
+					</div>
+					<div class="aui-searchbar-btn" tapmode>
+						取消
+					</div>
+				</div>
+				<div class="aui-bar aui-bar-btn aui-bar-btn-sm aui-bar-btn-full " id="div_bar">
+				<div class="aui-bar-btn-item" tapmode data-item-order="0" id="bar_00">
+					区域<span style="padding-left: 0.2rem" class="aui-iconfont aui-icon-down" id="icon_00">
+				</div>
+				<div class="aui-bar-btn-item" tapmode data-item-order="1" id="bar_01">
+					类别<span style="padding-left: 0.2rem" class="aui-iconfont aui-icon-down" id="icon_01">
+				</div>
+			</div>
+			<div class="classify-main" id="main_div" >
+				<div id="tips_01" style="display: none;">
+					<div class="aui-col-xs-3 region-item">
+						<ul class="aui-list aui-list-noborder" id="tips_011">
+							<li class="aui-list-item" onclick="chooseItem('tips_011', '')">
+								<div class="aui-list-item-inner">
+									<div class="aui-list-item-title aui-ellipsis-1 aui-font-size-14" id="tips_011">
+										不限
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="aui-col-xs-3  region-item">
+						<ul class="aui-list aui-list-noborder" id="tips_012">
+							<li class="aui-list-item" onclick="chooseItem('tips_012', '')">
+								<div class="aui-list-item-inner">
+									<div class="aui-list-item-title aui-ellipsis-1 aui-font-size-14" id="tips_012">
+										不限
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="aui-col-xs-3 region-item">
+						<ul class="aui-list aui-list-noborder" id="tips_013">
+							<li class="aui-list-item" onclick="chooseItem('tips_013', '')">
+								<div class="aui-list-item-inner">
+									<div class="aui-list-item-title aui-ellipsis-1 aui-font-size-14" id="tips_013">
+										不限
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="aui-col-xs-3 region-item">
+						<ul class="aui-list aui-list-noborder" id="tips_014">
+							<li class="aui-list-item" onclick="chooseItem('tips_014', '')">
+								<div class="aui-list-item-inner">
+									<div class="aui-list-item-title aui-ellipsis-1 aui-font-size-14" id="tips_014">
+										不限
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div class="aui_btn_bottom aui-padded-5" id="sub_btn" >
+						<p>
+							<div class="aui-btn aui-btn-info aui-btn-block aui-btn-sm" id="add_btn"  onclick="chooseItem('region')">
+								确认选择
+							</div>
+						</p>
+					</div>
+				</div>
+			<ul class="aui-list aui-list-noborder region-item"  id="tips_03" style="display: none">
+				<li class="aui-list-item" onclick="chooseItem('tips3', '')">
+					<div class="aui-list-item-inner">
+						<div class="aui-list-item-title aui-ellipsis-1 aui-font-size-14 aui-ellipsis-1" id="proj">
+							长沙县
+						</div>
+					</div>
+				</li>
+			</ul>
+				<ul class="aui-list aui-list-noborder region-item"  id="tips_02" style="display: none;">
+					<li class="aui-list-item" onclick="chooseItem('tips2', '')">
+						<div class="aui-list-item-inner">
+							<div class="aui-list-item-title aui-ellipsis-1 aui-font-size-14 aui-ellipsis-1" id="stage">
+								全部
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		<div class="back_div" id="back_div"  onclick="hideChooseFrm()"></div>
+			<!--<div id="mark_div" class="mark aui-hide">
+				<div class="aui-content aui-margin-b-15 ">
+				    <ul class="aui-list aui-list-in">
+				        <li class="aui-list-header">
+				            简单的列表布局
+				        </li>
+				        <li class="aui-list-item">
+				            <div class="aui-list-item-inner">
+				                <div class="aui-list-item-title">Item1</div>
+				            </div>
+				        </li>
+				        <li class="aui-list-item">
+				            <div class="aui-list-item-inner">
+				                <div class="aui-list-item-title">Item2</div>
+				            </div>
+				        </li>
+				        <li class="aui-list-item">
+				            <div class="aui-list-item-inner">
+				                <div class="aui-list-item-title">Item3</div>
+				            </div>
+				        </li>
+				    </ul>
+				</div>
+			</div>-->
+		    		<ul class="aui-list aui-media-list" id="scroll_list">
+			        <!--<li class="aui-list-item aui-list-item-arrow">
+			            <div class="aui-media-list-item-inner">
+			                <div class="aui-list-item-inner">
+			                    <div class="aui-list-item-text">
+			                        <div class="aui-list-item-title" style="width: 70%">黄江公路很费劲的说法技术戴欢的数据返回加多少分就</div>
+			                        <div class="aui-list-item-right aui-margin-t-20" style="width: 30%;">
+			                        	<i class="aui-iconfont aui-icon-my">夏蔚蓝是</i>
+			                        </div>
+			                    </div>
+			                    <div class="aui-list-item-text aui-ellipsis-2" style="border: 1px solid #0062CC;">
+			                        <div> <i class="aui-iconfont aui-icon-location"></i>地图时代峻峰还</div>
+			                    </div>
+			                </div>
+			            </div>
+			        </li>-->
+		    	</ul>
+		</div>
+	</body>
+	<script src="../js/jquery-1.8.2.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/aui-scroll.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/aui-tab.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/aui-toast.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/webconstans.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/comment.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var loadindex = 0,hasData = true,toast,_parentId = '-1';
+		//路数组
+		var Roadinfoarray = new Array();
+		var openTips = '',proj = "";
+		//选择的列表ID,控制图标
+		var chooseLocalLi = '-1', iconLocalLi = '-1';
+			//记录选中的类别
+		var category = "";
+		var isfirst = true;//是否是第一次请求数据
+		//记录选中的   省市区  id
+		var region1 = "", region2 = "", region3 = "",region4 = "";
+		//类别，区域
+		var categoryList = [{id:0,name:"国道"},{id:1,name:"省道"},{id:2,name:"县道"},{id:3,name:"乡道"},{id:4,name:"村道"}], regionList1 = [], regionList2 = [], regionList3 = [],regionList4 = [];
+		//选择的区域名字
+		var selectone = '',selecttwo = '',selectthree = '',selectfour = '';
+		//用户userid,单位id,翻页，关键字
+		var paramuserid,paramComid,currentPage = 1,inputkeywords='',selectCategoryId='',selectRegionId='';
+		//获取项目数据
+		var projList = []
+		$(document).ready(function(){
+			toast = new auiToast();
+			paramuserid = getUrlParam("userid");
+			paramComid = getUrlParam("comid");
+//			$("#aui-contant").css("margin-top",20);
+			$("#sub_btn").css("bottom",0);
+			$("#scroll_list").height($(window).height()-$("#search").outerHeight()-$("#div_bar").height());
+			//滚动监听，下拉加载；
+			$("#scroll_list").on('scroll',function(){
+//				alert($("#scroll_list")[0].scrollHeight)
+				if($("#scroll_list").scrollTop() >= $("#scroll_list")[0].scrollHeight-$("#scroll_list")[0].offsetHeight){
+					if (hasData && loadindex >= 10) {
+					currentPage++;	
+  					hasData = false;
+  					getLoadlist();
+  				}
+				}
+			})
+				getLoadlist(); 
+				//alert(html);
+				
+				  
+		});
+		var searchBar = document.querySelector(".aui-searchbar");
+		var searchBarInput = document.querySelector(".aui-searchbar input");
+		var searchBarBtn = document.querySelector(".aui-searchbar .aui-searchbar-btn");
+		var searchBarClearBtn = document.querySelector(".aui-searchbar .aui-searchbar-clear-btn");
+		if (searchBar) {
+			searchBarInput.onclick = function() {
+				searchBarBtn.style.marginRight = 0;
+			}
+			searchBarInput.oninput = function() {
+				if (this.value.length) {
+					searchBarClearBtn.style.display = 'block';
+					searchBarBtn.classList.add("aui-text-info");
+					searchBarBtn.textContent = "搜索";
+				} else {
+					searchBarClearBtn.style.display = 'none';
+					searchBarBtn.classList.remove("aui-text-info");
+					searchBarBtn.textContent = "取消";
+				}
+			}
+		}
+		searchBarClearBtn.onclick = function() {
+			this.style.display = 'none';
+			searchBarInput.value = '';
+			searchBarBtn.classList.remove("aui-text-info");
+			searchBarBtn.textContent = "取消";
+		}
+		searchBarBtn.onclick = function() {
+			inputkeywords = searchBarInput.value;
+			if (inputkeywords.length) {
+				searchBarInput.blur();
+				//清空数据，然后重新获取
+				refushPagelist();
+			} else {
+				this.style.marginRight = "-" + this.offsetWidth + "px";
+				searchBarInput.value = '';
+				searchBarInput.blur();
+				inputkeywords = '';
+				refushPagelist();
+				//getMyAcceptlogInfo();
+			}
+		}
+		//重新刷新界面list数据
+		function refushPagelist(){
+			$('#no_data').css('display','none');
+			$('#box_refresh').css('display','none');
+			loadindex = 0;
+			Roadinfoarray.length=0;
+			$(".aui-media-list").html("");
+			getLoadlist(); 
+		}
+  		
+  		var bar = document.querySelectorAll(".aui-bar-btn");
+		if (bar) {
+			for (var i = 0; i < bar.length; i++) {
+				var d = bar[i];
+				var tab = new auiTab({
+					element : bar[i],
+					repeatClick : true
+				}, function(ret) {
+					var mInput = document.getElementById('search-input');
+					if (mInput == document.activeElement) {
+						mInput.blur();
+						setTimeout(function(){
+							tabClick(ret);
+						}, 300)
+				} else {
+					tabClick(ret);
+					}
+				});
+			}
+		}
+		
+		function tabClick(ret){
+			//目前选择的tab;
+				openTips = ret.index;
+			if (ret.index == 1) {
+				$('#tips_02').css('display','none');
+//				$('#tips_01').css('display','block');
+				$('#tips_03').css('display','block');
+				//clearCondition();
+				chooseClassify('bar_00', 'icon_00');
+			} else if (ret.index == 2) {
+//				$('#tips_01').css('display','none');
+				$('#tips_03').css('display','none');
+				$('#tips_02').css('display','block');
+				chooseClassify('bar_01', 'icon_01');
+				
+			}
+		}
+			
+				//选择分类
+		function chooseClassify(chooseLi, iconLi) {
+			if (chooseLocalLi != '-1') {
+				if (chooseLocalLi == chooseLi) {
+					//隐藏选择frm
+					hideChooseFrm();
+					changeTips(chooseLi);
+				} else {
+					$("#"+iconLocalLi).removeClass('aui-icon-top');
+					$("#"+iconLocalLi).addClass('aui-icon-down');
+					$("#"+iconLi).removeClass('aui-icon-down');
+					$("#"+iconLi).addClass('aui-icon-top');
+					chooseLocalLi = chooseLi;
+					iconLocalLi = iconLi;
+					changeTips(chooseLocalLi);
+					
+				}
+			} else {//第一次开启遮罩层界面
+				$("#"+iconLi).removeClass('aui-icon-down');
+				$("#"+iconLi).addClass('aui-icon-top');
+				chooseLocalLi = chooseLi;
+				changeTips(chooseLi);
+				iconLocalLi = iconLi;
+				$("#main_div").slideDown("fast");
+					if(isfirst){
+						getStageState(); 
+						isfirst = false;
+					}
+					if($("#back_div").has('aui-hide')){
+					$("#back_div").removeClass('aui-hide');
+				}
+			}
+		}
+		
+			//切换当前选项卡，重新绘制当前界面
+		function changeTips(value) {
+				if(value == 'bar_00'){//选择区域
+//					$('#tips_01').css('display','block');
+					$('#tips_02').css('display','none');
+					$('#tips_03').css('display','block');
+					
+				}else{
+//					$('#tips_01').css('display','none');
+					$('#tips_02').css('display','block');
+					$('#tips_03').css('display','none');
+				}
+				
+			//重新计算高度
+			$('#back_div').css('top',$("#main_div").outerHeight()+$("#search").outerHeight()+$("#div_bar").outerHeight())
+			$('#back_div').height($(window).height()-$("#main_div").outerHeight()-$("#search").outerHeight()-$("#div_bar").outerHeight());//底部黑边框的高
+		}
+
+		//隐藏classify
+		function hideChooseFrm(){
+			if (iconLocalLi != '-1') {
+				$("#"+iconLocalLi).removeClass('aui-icon-top');
+				$("#"+iconLocalLi).addClass("aui-icon-down");
+				iconLocalLi = '-1';
+			}
+			chooseLocalLi = '-1';
+			$("#back_div").addClass('aui-hide');
+			$("#main_div").slideUp("fast");
+		}
+		//一路一带的列表
+				function getLoadlist(){
+					toast.loading({
+						title: "加载中",
+						duration: 2000
+					});
+					$.post(GET_LOAD_LIST,
+						{ 
+						road_creater: paramuserid,
+						//road_creater:'44494863-817F-4CA6-B854-8CE16FC915B6',
+						rows:10, 
+						page:currentPage,
+						road_region:selectRegionId,
+						road_type:selectCategoryId,
+						keywords:inputkeywords 
+						},function(ret,status){
+							toast.hide();
+							if(status =='success'&&ret.eCode == '0'){
+								//roadoffset+= ret.eData.rows.length;
+								if (ret.eData.rows.length > 0) {
+									hasData = true;
+									drawloadlist(ret.eData.rows);
+								}else{
+									hasData = false;
+									if(currentPage == 1){
+										$('#no_data').css('display','block');
+									}else{
+										currentPage--;
+										toast.custom({
+										html:'温馨提示',	
+					                    title:"到底啦,没有更多数据了...",
+					                    duration:2000
+					               		});
+										
+									}
+								}
+							}else{
+								$('#box_refresh').css('display','block');
+								$('#err_info').text(ret.eMsg+"userid"+paramuserid)
+							}
+						},'json');
+					
+				}
+			
+
+  		
+  		function drawloadlist(mData){
+  			var html = '';
+  			for (var i = 0;i < mData.length;i++) {
+					Roadinfoarray.push(mData[i]);
+					html += '<li class="aui-list-item aui-list-item-arrow" onclick="onclickitem(\'itemClick\',' + loadindex + ')">'+
+					            '<div class="aui-media-list-item-inner">'+
+					                '<div class="aui-list-item-inner">'+
+					                    '<div class="aui-list-item-text">'+
+					                        '<div class="aui-list-item-title" style="width: 70%;">'+mData[i].road_name+'</div>'+
+					                        '<div class="aui-list-item-right aui-margin-t-20" style="width: 30%;"><i class="aui-iconfont aui-icon-my">'+mData[i].road_manager+'</i></div>'+
+					                    '</div>'+
+					                    '<div class="aui-list-item-text aui-ellipsis-2">'+
+					                        '<div > <i class="aui-iconfont aui-icon-location"></i>'+mData[i].road_regionname+'</div>'
+					                    '</div>'+
+					                '</div>'+
+					            '</div>'+
+				        '</li>';
+				        loadindex++;
+					
+				}
+  			$(".aui-media-list").append(html);
+  			
+  		}
+		
+		function onclickitem(type,mindex){
+			switch (type){
+				case 'itemClick':
+					//$(window).attr('location','load_detail.html');
+						api.openWin({
+							    name: 'newsDetail',
+							    url: 'http://app.jizhibao.com.cn/RoadRecord/Road_Details?roadId='+Roadinfoarray[mindex].road_id,
+								delay:200,
+								// useWKWebView:true,
+								historyGestureEnabled:true
+							});
+					//alert(JSON.stringify(infoarray[mindex]));
+					break;
+				default:
+					break;
+			}
+		}
+		
+			//加载类别内容
+		function getStageState(){
+			drawStageView();
+			//加载地域信息-默认全国的子集
+			//getRegionInfo('-1');
+			
+			//调用项目接口
+			getProjCont();
+		}
+		
+		//加载项目（作为区域的接口）
+		function getProjCont(){
+			toast.loading({
+				title: "加载中",
+				duration: 2000
+			});
+			$.post(GET_PROJ_CONT_LIST_URL,
+				{
+				user_id : paramuserid,
+				com_id : paramComid
+				},function(ret,status){
+					if (ret) {
+					if (status =='success'&&ret.eCode == "200") {
+						if (ret.eData) {
+							projList = ret.eData;
+							drawProjView();
+						}
+					} else {
+						alert('筛选项目合同' + ret.eMsg);
+						//openToast('筛选项目合同' + ret.eMsg);
+					}
+				} else {
+					alert('筛选项目合同-' + err.msg);
+					//openToast('筛选项目合同-' + err.msg);
+				}
+				toast.hide();
+				},'json')
+		}
+			
+		
+		//加载地域数据
+		function getRegionInfo(fatherId){
+			toast.loading({
+				title: "加载中",
+				duration: 2000
+			});
+			$.post(GET_REGION_INFO,
+				{
+				ParentCode: fatherId,
+				comid : paramComid
+				},function(ret,status){
+					toast.hide();
+					if(status =='success'&&ret.eCode == 0){
+						if (ret.eData.length > 0) {
+							if (fatherId != "-1") {
+								drawRegionView(ret.eData);
+							} else {
+								drawRegionView(ret.eData[0].children);
+							}
+						}
+					}else{
+						alert(JSON.stringify(ret))
+					}
+				},'json')
+		}
+
+		//加载地域数据
+		function getRegionInfo(fatherId){
+			toast.loading({
+				title: "加载中",
+				duration: 2000
+			});
+			$.post(GET_REGION_INFO,
+				{
+				ParentCode: fatherId,
+				comid : paramComid
+				},function(ret,status){
+					toast.hide();
+					if(status =='success'&&ret.eCode == 0){
+						if (ret.eData.length > 0) {
+							if (fatherId != "-1") {
+								drawRegionView(ret.eData);
+							} else {
+								drawRegionView(ret.eData[0].children);
+							}
+						}
+					}else{
+						alert(JSON.stringify(ret))
+					}
+				},'json')
+		}
+
+		//绘制类别界面
+		function drawStageView(){
+			//类别
+			var stageHtml = '';
+			var stageDiv = $("#tips_02");
+			for (var i = 0; i < categoryList.length; i++) {
+				stageHtml = '<li class="aui-list-item region-item1" onclick="chooseItem(\'tips2\', \''+ i +'\')">';
+				stageHtml += '<div class="aui-list-item-inner">';
+				stageHtml += '<div class="aui-list-item-title aui-ellipsis-1 aui-font-size-14 aui-ellipsis-1" id="category'+ i +'">'+ categoryList[i].name +'</div></div></li>';
+				stageDiv.append(stageHtml);
+			}
+		}
+		
+				//绘制项目合同界面
+		function drawProjView(){
+			//项目
+			var projHtml = '';
+			var projDiv = $("#tips_03");
+			var drawFirst = false
+			for (var i = 0; i < projList.length; i++) {
+				projHtml = '<li class="aui-list-item" onclick="chooseItem(\'tips3\', \''+ i +'\')">';
+				projHtml += '<div class="aui-list-item-inner">';
+				projHtml += '<div class="aui-list-item-title aui-ellipsis-1 aui-font-size-14 aui-ellipsis-1" id="proj'+ i +'">'+ projList[i].proj_name +'</div></div></li>';
+				projDiv.append(projHtml);
+				//首次绘制，确定当前项目//------默认全部
+//				if (projList[i].proj_id == $api.getStorage('proj_info').proj_id) {
+//					contList = projList[i].contlist;
+//					chooseItem('tips2', i, true);
+//				}
+			}
+			if (drawFirst) {
+				//初始化
+				initdata();
+			}
+		}
+
+
+		//绘制地域界面
+		function drawRegionView(regionData){
+			var reType = '', regionDiv, regionHtml = "";
+			var divId = '';
+			var drawFirst = false
+			if (regionData[0]._parentId == "-1" || regionData[0]._parentId == "0" ) {
+				_parentId = regionData[0]._parentId;
+				drawFirst = true;
+				//获取的是省级
+				reType = '1';
+				//清空
+				region1 = "";
+				region2 = "";
+				region3 = "";
+				region4 = "";
+				regionList1 = regionData;
+				regionList2 = [];
+				regionList3 = [];
+				regionList4 = [];
+				$('#tips_012').html("");
+				$('#tips_013').html("");
+				$('#tips_014').html("");
+			} else if (regionData[0]._parentId == region1) {
+				//获取的是市级
+				reType = '2';
+				//清空
+				region2 = "";
+				region3 = "";
+				region4 = "";
+				regionList2 = regionData;
+				regionList3 = [];
+				regionList4 = [];
+				$('#tips_013').html("");
+				$('#tips_014').html("");
+			} else if(regionData[0]._parentId == region2){
+				reType = '3';
+				//清空
+				region3 = "";
+				region4 = "";
+				regionList3 = regionData;
+				regionList4 = [];
+				$('#tips_014').html("");
+				
+			}else {
+				//获取的是区级
+				reType = '4';
+				region4 = "";
+				regionList4 = regionData;
+			}
+			//清空本级并绘制
+			divId = 'tips_01' + reType;
+			regionDiv = $("#"+divId);
+			regionDiv.html("");
+			//添加不限
+			regionHtml = '<li class="aui-list-item" onclick="chooseItem(\''+ divId +'\', \'\')">';
+			regionHtml += '<div class="aui-list-item-inner">';
+			regionHtml += '<div class="aui-list-item-title aui-ellipsis-1 aui-font-size-14 aui-ellipsis-1" id="m'+ divId +'">不限 </div></div></li>';
+			regionDiv.append(regionHtml);
+			//循环绘制
+			for (var i = 0; i < regionData.length; i++) {
+				regionHtml = '<li class="aui-list-item" onclick="chooseItem(\''+ divId +'\', \''+ i +'\')">';
+				regionHtml += '<div class="aui-list-item-inner">';
+				regionHtml += '<div class="aui-list-item-title aui-ellipsis-1 aui-font-size-14 aui-ellipsis-1" id="m'+ divId + regionData[i].id +'">'+ regionData[i].text +'</div></div></li>';
+				regionDiv.append(regionHtml);
+			}
+			if (drawFirst) {
+				//初始化 
+				initdata();
+			}
+		}
+		
+			//初始化界面
+		function initdata(){
+				if(openTips == '1'){//选择区域
+//					$('#tips_01').css('display','block');
+					$('#tips_03').css('display','block');
+					$('#tips_02').css('display','none');
+					
+				}else{
+//					$('#tips_01').css('display','none');
+					$('#tips_03').css('display','none');
+					$('#tips_02').css('display','block');
+				}
+			//显示之后再计算高度
+			$('#back_div').css('top',$("#main_div").outerHeight()+$("#search").outerHeight()+$("#div_bar").outerHeight());
+			$('#back_div').height($(window).height()-$("#main_div").outerHeight()-$("#search").outerHeight()-$("#div_bar").outerHeight());	
+
+		}
+		 
+				//子节点点击事件
+		function chooseItem(chooseType, index){
+			switch(chooseType){
+				case 'tips_011':
+					//选中省
+					$("#mtips_011"+region1).removeClass('classify-click');
+					if (index){
+						$("#mtips_011"+ regionList1[index].id).addClass('classify-click');
+						region1 = regionList1[index].id;
+						selectone =regionList1[index].text;
+						selecttwo = "";
+						selectthree = "";
+						selectfour = "";
+						//刷新数据
+						getRegionInfo(region1);
+					} else {
+						$("#mtips_011").addClass('classify-click');
+						region1 = "";
+						//情况后两级
+						region2 = "";
+						region3 = "";
+						region4 = "";
+						selectone = "";
+						regionList2 = [];
+						regionList3 = [];
+						regionList4 = [];
+						$("#tips_012").html("");
+						$("#tips_013").html("");
+						$("#tips_014").html("");
+					}
+					break;
+				case 'tips_012':
+					//选中市
+					$("#mtips_012"+region2).removeClass('classify-click');
+					if (index){
+						$("#mtips_012"+ regionList2[index].id).addClass('classify-click');
+						region2 = regionList2[index].id;
+						selecttwo =regionList2[index].text;
+						selectthree = "";
+						selectfour = "";
+						//刷新数据
+						getRegionInfo(region2);
+					} else {
+						$("#mtips_012").addClass('classify-click');
+						region2 = "";
+						selecttwo = "";
+						//情况后两级
+						region3 = "";
+						region4 = "";
+						regionList3 = [];
+						regionList4 = [];
+						$("#tips_013").html("");
+						$("#tips_014").html("");
+					}
+					break;
+					case 'tips_013':
+					//选中区
+					$("#mtips_013"+region3).removeClass('classify-click');
+					if (index){
+						$("#mtips_013"+ regionList3[index].id).addClass('classify-click');
+						region3 = regionList3[index].id;
+						selectthree =regionList3[index].text;
+						selectfour = "";
+						//刷新数据
+						getRegionInfo(region3);
+					} else {
+						$("#mtips_013").addClass('classify-click');
+						region3 = "";
+						selectthree = "";
+						region4 = "";
+						regionList4 = [];
+						$("#tips_014").html("");
+					}
+					break;	
+				case 'tips_014':
+					//选中镇
+					$("#mtips_014"+region4).removeClass('classify-click');
+					if (index) {
+						$("#mtips_014"+ regionList4[index].id).addClass('classify-click');
+							region4 = regionList4[index].id;
+							selectfour = regionList4[index].text;
+						//刷新数据
+					} else {
+						region4 = "";
+						selectfour = "";
+						$("#mtips_014").addClass('classify-click');
+					}
+					break;
+				case 'region':
+					//返回选中的区域
+					$('#no_data').css('display','none');
+					var regionId = "", regionName = "", value = "";
+					if(region4){
+						regionId = region4;
+						regionName = $("#mtips_014"+ region4).text();
+					}else if (region3) {
+						//区有值 取区域
+						regionId = region3;
+						regionName = $("#mtips_013"+ region3).text();
+					} else if (region2){
+						regionId = region2;
+						regionName = $("#mtips_012"+ region2).text();
+					} else if (region1){
+						regionId = region1;
+						regionName = $("#mtips_011"+ region1).text();
+					} else {
+						//都没值  选的全国
+						regionId = _parentId;
+						regionName = "区域不限";
+						selectone = "区域不限";
+					}
+					
+					value = {
+						id : regionId,
+						name : regionName
+					}
+					typeChange("region", value);
+					break;
+				case 'tips2':
+					$('#no_data').css('display','none');
+					//选中高亮
+					$("#stage"+category).removeClass('classify-click');
+					$("#stage"+ index).addClass('classify-click');
+					category = index;
+					//刷新数据
+					typeChange("category", categoryList[index]);
+					break;
+				case 'tips3':
+					//选中高亮
+					$('#no_data').css('display','none');
+					$("#proj"+proj).removeClass('classify-click');
+					$("#proj"+ index).addClass('classify-click');
+					//判断是否切换项目
+//					if (index && index != proj) {
+//						cont = '';
+//						contList = projList[index].contlist;
+//						drawContView();
+//					} else if (!index) {
+//						cont = '';
+//						contList = [];
+//						drawContView();
+//					}
+					proj = index;
+					typeChange("proj", projList[index]);
+					//刷新数据
+//					if (!noCallBack) {
+//						api.execScript({
+//							name: api.pageParam.winname,
+//							frameName: api.pageParam.frmname,
+//		                    script: 'typeChange(\'proj\', '+ JSON.stringify(projList[index]) +');'
+//	                    });
+//                  }
+					break;	
+			}
+		}
+		
+		//类别，其他内容选择回调
+		function typeChange(type, data){
+			//console.log(JSON.stringify(data))
+			hideChooseFrm();
+			var showName = "";
+			if (type == "category"){
+				//类别
+				if(data){
+					showName = data.name.length > 4 ? data.name.substring(0, 4) + '...' : data.name;
+					$("#bar_01").html(showName + '<span style="padding-left: 0.2rem" class="aui-iconfont aui-icon-down" id="icon_01">');
+					selectCategoryId = data.id;
+					refushPagelist();
+				} else {
+					$("#bar_01").html('类别<span style="padding-left: 0.2rem" class="aui-iconfont aui-icon-down" id="icon_01">');
+					selectCategoryId = '';
+					refushPagelist();
+				}
+			} else if (type == "region"){
+				//区域
+				if(data){
+					showName = (data.name.length > 4) ? (data.name.substring(0, 4) + '...') : data.name;
+					$("#bar_00").html(showName + '<span style="padding-left: 0.2rem" class="aui-iconfont aui-icon-down" id="icon_00">');
+					selectRegionId = data.id;
+					refushPagelist();
+				}
+			}else if(type == "proj"){
+					console.log(JSON.stringify(data))
+				if(data){
+					showName = (data.proj_name.length > 4) ? (data.proj_name.substring(0, 4) + '...') : data.proj_name;
+					$("#bar_00").html(showName + '<span style="padding-left: 0.2rem" class="aui-iconfont aui-icon-down" id="icon_00">');
+					selectRegionId = data.proj_id;
+					refushPagelist();
+				}else{//当选择长沙县时；
+					showName = "长沙县";
+					$("#bar_00").html(showName + '<span style="padding-left: 0.2rem" class="aui-iconfont aui-icon-down" id="icon_00">');
+					selectRegionId = '';
+					refushPagelist();
+				}
+				
+			}
+		}
+			//清除所选条件
+		function clearCondition(){
+			$("#bar_00").html('区域<span style="padding-left: 0.2rem" class="aui-iconfont aui-icon-down" id="icon_00');
+			$("#bar_01").html('类别<span style="padding-left: 0.2rem" class="aui-iconfont aui-icon-down" id="icon_01');
+			clearCondition();
+		}
+		
+			//清除选项
+		function clearCondition(){
+			if (category) {
+				$("#category"+category).removeClass('classify-click');
+			}
+			if (region1) {
+				$("#mtips_011"+region1).removeClass('classify-click');
+			}
+			if (region2) {
+				$("#mtips_012"+region2).removeClass('classify-click');
+			}
+			if (region3) {
+				$("#mtips_013"+region3).removeClass('classify-click');
+			}
+			if (region4) {
+				$("#mtips_014"+region4).removeClass('classify-click');
+			}
+			region1 = "";
+			region2 = "";
+			region3 = "";
+			region4 = "";
+			regionList2 = [];
+			regionList3 = [];
+			regionList4 = [];
+			$("#tips_012").html("");
+			$("#tips_013").html("");
+			$("#tips_014").html("");
+		}
+		function closeWin(){
+//				alert(window.history.length)
+//				window.history.back();
+				api.closeWin();
+			}
+	</script>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="maximum-scale=2.0,minimum-scale=1.0,user-scalable=yes,width=device-width,initial-scale=1.0"/>
+		<title></title>
+	</head>
+	<link rel="stylesheet" type="text/css" href="../../css/aui2.css"/>
+	<style type="text/css">
+			#aui-header{
+			position: fixed;
+            background-color: #00b7f5;
+            z-index: 1;
+            padding-top: 1.25rem;
+			}
+		.titleName{
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.2rem;
+          }
+          .art_picture{
+            display: block;
+            margin: 0 auto;
+            width: 30%;
+            height: 50%;
+          }
+          .art_content{
+            font-size: 0.8rem;
+
+          }
+		</style>
+	<body>
+		<header class="aui-bar aui-bar-nav" id="aui-header" >
+  			<a class="aui-pull-left aui-bar-info aui-btn"  onclick="closeWin()"><span class="aui-iconfont aui-icon-left"></span>返回</a>
+  			<div class="aui-title" id="title">
+  				文章详情
+  			</div>
+  		</header>
+      <div class="aui-content-padded" >
+        <h4 class="titleName">
+[四好农村路]　“只有路修好了，村上才会有发展。”
+        </h4>
+        <h5 class="news_time">
+          <i class="aui-iconfont aui-icon-date"></i>
+          2018-08-03 12:23:28
+        </h5>
+        <img class="art_picture" src="../../img/nodata.png" alt="">
+        <div class="art_content" style="text-indent:1rem">
+            青山桥镇花园村位于宁乡西南边境，境内多山地丘陵，交通不便，经济发展落后，是省定贫困村，是我市脱贫攻坚的主战场。
+  今年，市交运局在花园村建设“四好农村公路”助力脱贫攻坚，其中自然村通水泥路4条2公里、双投公路1.28公里、窄路加宽2公里。
+  该村共545户5660人，发展了九春桑蚕产业基地、石英菌栽培、光伏发电、贫困户养殖业等扶贫产业项目，但因道路的不通畅，阻碍了这些项目的发展。
+  今年该村建设“四好农村公路”，必将为该村产业发展插上“翅膀”。
+  目前，该村4条自然村通水泥路已完工2条，正在建设第3条自然村通水泥路，该路位于梨子组，全长500多米，预计8月底完工。梨子组沿线只有9户40多名村民，但公路建设得到该组村民全力支持，户户都有村民义务投工投劳。
+  “事关自身产业发展，义务投工投劳是我应该做的。”在梨子组自然村通水泥路项目建设现场，贫困户李丙乾正忙着清理路基上的杂物，因天气炎热，他汗水如雨滴般洒落，但他仍埋头苦干、无怨无悔。李丙乾老婆体弱多病，女儿正在读高中，家庭生活贫困。在村上的帮助下，李丙乾发展养殖业，饲养野猪12头、牛2头、鸡60多只、蜜蜂30多箱。以前，李丙乾送售牲畜走的是坑坑洼洼的土路，十分不便，待自然村通水泥路项目完工后，就可以通过平坦的水泥路送售牲畜。对此，李丙乾充满期待、十分高兴。
+  花园村自然村通水泥路项目将于9月初完工，届时将启动双投公路项目建设、窄路加宽项目建设，所有项目建设均将于年内完工。
+        
+        </div>
+
+      </div>
+	</body>
+	<script src="../../js/jquery-1.8.2.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/aui-toast.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/webconstans.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/comment.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var html='',index = 0,hasData = true,offset = 0,toast;
+		//页面参数
+		var Newsid;
+		$(document).ready(function(){
+			toast = new auiToast();
+			$(".aui-content-padded").css("margin-top",$("#aui-header").outerHeight());
+			Newsid = getUrlParam("newsid");
+			//initView();
+		})
+		
+		function initView(){
+			toast.loading({
+				title: "加载中",
+				duration: 2000
+			});
+			$.post(GET_NEWS_DETAILINFO,
+				{
+				newsid: Newsid
+				},
+				function(ret,status){
+					toast.hide();
+					if(status =='success'&&ret.rCode == 0){
+						$(".titleName").text(ret.data.title?ret.data.title:"暂无");
+						$('.news_time').html('<i class="aui-iconfont aui-icon-date"></i>'+(ret.data.createtime?ret.data.createtime:"暂无"));
+						console.log(JSON.stringify(ret));
+						$(".art_content").text(ret.data.contents);
+						if(ret.imgurl !=null&&ret.imgurl){
+							$(".art_picture").css("src",ret.data.imgurl);
+						}else{
+							$(".art_picture").addClass("aui-hide");
+						}
+						
+					}else{
+						alert(JSON.stringify(ret));
+					}
+			},'json')
+		}
+		function closeWin(){
+			//window.history.back();
+			if(history.length>1){
+				window.history.back();
+			}else{
+				api.closeWin();
+			}
+			
+			//$(window).attr('location','new_list');
+		}
+		
+		
+	</script>
+</html>
